@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
 
     [SerializeField] private float speed = 30f;    // Player hareket hýzý
-    [SerializeField] private float horizontalspeed = 10f; // Player yön hareket hýzý
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,11 +29,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {   // Eðer klavyede sol ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeLeft deðeri True ise  Sola hareket gider
-            moveX = moveX - 1 * horizontalspeed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
+            moveX = moveX - 1 * speed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {   // Eðer klavyede sað ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeRight deðeri True ise Saða hareket gider  
-            moveX = moveX + 1 * horizontalspeed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
+            moveX = moveX + 1 * speed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
         }
         else if (Input.GetKey(KeyCode.UpArrow))
         {   // Eðer klavyede yukarý ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeUp deðeri True ise Ýleri hareket gider         

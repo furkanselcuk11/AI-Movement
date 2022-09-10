@@ -18,6 +18,7 @@ public class BasicEnemyAI : MonoBehaviour
     [Header("Attacking")]
     [SerializeField] private float timeBetweenAttacks;
     bool alreadyAttacked;
+    bool playerAttacked;
     [Space]
     [Header("States")]
     [SerializeField] private float sightRange, attackRange; // Görüþ ve atak menzil aralýðý
@@ -31,11 +32,12 @@ public class BasicEnemyAI : MonoBehaviour
     {
         // Oyuncu atak mý yoksa görüþ alanýnda mý kontrol edilir
         playerInSightRange = Physics.CheckSphere(this.transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(this.transform.position, attackRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(this.transform.position, attackRange, whatIsPlayer);        
 
         if (!playerInSightRange && !playerInAttackRange) Patroling();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        
     }
     private void Patroling()
     {
@@ -56,19 +58,37 @@ public class BasicEnemyAI : MonoBehaviour
     }
     private void AttackPlayer()
     {         
-        agent.SetDestination(this.transform.position);
+        //agent.SetDestination(this.transform.position);
         this.transform.LookAt(player);  // Player doðru bakar
-
+        
         if (!alreadyAttacked)
         {
+            RaycastHit hit;
+            if (Physics.Raycast(this.transform.position, this.transform.forward, out hit, attackRange))
+            {
+                if (hit.collider.gameObject.CompareTag("Player"))
+                {
+                    Debug.DrawLine(this.transform.position, hit.point, Color.red);
+                    playerAttacked = true;
+                }
+                else
+                {
+                    Debug.DrawLine(this.transform.position, hit.point, Color.green);
+                    playerAttacked = false;
+                }
+            }
             // Mermi atýþ ve yok oluþu
-            GameObject obj = Instantiate(projectile, this.transform.position, Quaternion.identity);
-            obj.transform.GetComponent<Rigidbody>().AddForce(this.transform.forward * 32f, ForceMode.Impulse);
-            obj.transform.GetComponent<Rigidbody>().AddForce(this.transform.up * 2f, ForceMode.Impulse);
-            DestroyObject(obj);
+            if (playerAttacked)
+            {
+                GameObject obj = Instantiate(projectile, this.transform.position, Quaternion.identity);
+                obj.transform.GetComponent<Rigidbody>().AddForce(this.transform.forward * 32f, ForceMode.Impulse);
+                obj.transform.GetComponent<Rigidbody>().AddForce(this.transform.up * 2f, ForceMode.Impulse);
+                DestroyObject(obj);
+
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
             
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
     private void SearchWalkPoint()
