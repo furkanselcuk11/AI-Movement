@@ -28,24 +28,20 @@ public class PlayerController : MonoBehaviour
         float moveZ = transform.position.z; // Player objesinin z pozisyonun deðerini alýr       
 
         if (Input.GetKey(KeyCode.LeftArrow))
-        {   // Eðer klavyede sol ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeLeft deðeri True ise  Sola hareket gider
+        {   // Eðer klavyede sol ok tuþuna basýldýysa 
             moveX = moveX - 1 * speed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
         }
         else if (Input.GetKey(KeyCode.RightArrow))
-        {   // Eðer klavyede sað ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeRight deðeri True ise Saða hareket gider  
+        {   // Eðer klavyede sað ok tuþuna basýldýysa
             moveX = moveX + 1 * speed * Time.fixedDeltaTime;    // Pozisyon sýnýrlandýrýlmasý yoksa 
         }
         else if (Input.GetKey(KeyCode.UpArrow))
-        {   // Eðer klavyede yukarý ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeUp deðeri True ise Ýleri hareket gider         
+        {   // Eðer klavyede yukarý ok tuþuna basýldýysa       
             moveZ = moveZ + 1 * speed * Time.fixedDeltaTime;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
-        {   // Eðer klavyede aþaðý ok tuþuna basýldýysa yada "MobileInput" scriptinin swipeDown deðeri True ise Geri hareket gider         
+        {   // Eðer klavyede aþaðý ok tuþuna basýldýysa       
             moveZ = moveZ - 1 * speed * Time.fixedDeltaTime;
-        }
-        else
-        {
-            rb.velocity = Vector3.zero; // Eðer hareket edilmediyse Player objesi sabit kalsýn
         }
 
         transform.position = new Vector3(moveX, transform.position.y, moveZ);
